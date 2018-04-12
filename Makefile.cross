@@ -1,5 +1,5 @@
 
-.PHONY: all builder go-deps armv7-binaries arm64-binaries osx64-binaries win64-binaries x86_64-binaries
+.PHONY: all builder armv7-binaries arm64-binaries osx64-binaries win64-binaries x86_64-binaries
 all: armv7-binaries arm64-binaries osx64-binaries win64-binaries x86_64-binaries
 
 CCARMV7:=arm-linux-gnueabihf-gcc
@@ -8,22 +8,19 @@ CCOSX64:=/tmp/osxcross/target/bin/o64-clang
 CCWIN64:=x86_64-w64-mingw32-gcc
 CCX64:=/tmp/x86_64-centos6-linux-gnu/bin/x86_64-centos6-linux-gnu-gcc
 
-go-dep:
-	go get -v github.com/golang/dep
-
-armv7-binaries: go-dep
+armv7-binaries:
 	go run build.go -goarch armv7 -cc ${CCARMV7} build
 
-arm64-binaries: go-dep
+arm64-binaries:
 	go run build.go -goarch arm64 -cc ${CCARM64} build
 
-osx64-binaries: go-dep
+osx64-binaries:
 	go run build.go -goos darwin -cc ${CCOSX64} build
 
-win64-binaries: go-dep
+win64-binaries:
 	go run build.go -goos windows -cc ${CCWIN64} build
 
-x86_64-binaries: go-dep
+x86_64-binaries:
 	CC=${CCX64} go run build.go build
 
 builder:

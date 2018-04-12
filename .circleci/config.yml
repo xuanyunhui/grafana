@@ -33,6 +33,19 @@ jobs:
           name: build backend and run go tests
           command: './scripts/circle-test-backend.sh'
 
+  build-cross:
+    docker:
+     - image: xlson/grafana-builder
+    working_directory: /go/src/github.com/grafana/grafana
+    steps:
+      - checkout
+      - run:
+          name: prep crosscompile
+          command: 'cd /tmp && dpkg -i *.deb && tar xfJ x86_64-centos6-linux-gnu.tar.xz && tar xfJ osxcross.tar.xz'
+      - run:
+          name: crosscompile grafana
+          command: 'make -f Makefile.cross'
+
   build:
     docker:
      - image: grafana/build-container:v0.1
@@ -103,6 +116,10 @@ workflows:
   version: 2
   test-and-build:
     jobs:
+      - build-cross:
+          filters:
+            tags:
+              only: /.*/
       - build:
           filters:
             tags:
