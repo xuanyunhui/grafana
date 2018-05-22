@@ -26,6 +26,7 @@ export class PrometheusDatasource {
   basicAuth: any;
   withCredentials: any;
   metricsNameCache: any;
+  token: any;
   interval: string;
   httpMethod: string;
   resultTransformer: ResultTransformer;
@@ -41,6 +42,7 @@ export class PrometheusDatasource {
     this.directUrl = instanceSettings.directUrl;
     this.basicAuth = instanceSettings.basicAuth;
     this.withCredentials = instanceSettings.withCredentials;
+    this.token = instanceSettings.jsonData.token;
     this.interval = instanceSettings.jsonData.timeInterval || '15s';
     this.httpMethod = instanceSettings.jsonData.httpMethod || 'GET';
     this.resultTransformer = new ResultTransformer(templateSrv);
@@ -78,6 +80,12 @@ export class PrometheusDatasource {
     if (this.basicAuth) {
       options.headers = {
         Authorization: this.basicAuth,
+      };
+    }
+    
+    if (this.token) {
+      options.headers = {
+        "Authorization": 'Bearer ' + this.token
       };
     }
 
