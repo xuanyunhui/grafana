@@ -85,7 +85,7 @@ export class PrometheusDatasource {
     
     if (this.token) {
       options.headers = {
-        "Authorization": 'Bearer ' + this.token
+        "Authorization": 'Bearer ' + this.token,
       };
     }
 
